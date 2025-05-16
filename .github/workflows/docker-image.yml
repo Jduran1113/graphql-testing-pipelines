@@ -36,7 +36,7 @@ jobs:
     - name: Push the Docker image
       run: |
         echo "Pushing image to dockerhub"
-        docker push joshuadv13/graphql-pipelines:0.0.2 .
+        docker push joshuadv13/graphql-pipelines:0.0.2
         echo "Fin del push"
 
     # - name: Build the Docker image
