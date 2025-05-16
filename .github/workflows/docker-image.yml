@@ -36,7 +36,7 @@ jobs:
         echo "Haciendo login"
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
         echo "Fin del login"
-        echo "New version: $VERSION!"
+        echo "New version: $VERSION!!"
 
     # - name: Build the Docker image
     #   env:
