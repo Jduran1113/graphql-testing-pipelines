@@ -35,18 +35,19 @@ jobs:
         echo "Haciendo login"
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
         echo "Fin del login"
-        echo "New version deployed: ${{steps.version.outputs.version}}"
 
-    # - name: Build the Docker image
-    #   run: |
-    #     echo "Building image"
-    #     docker build -t joshuadv13/graphql-pipelines:0.0.3 .
-    #     docker build -t joshuadv13/graphql-pipelines:latest .
-    #     echo "Fin de la construccion"
+    - name: Build the Docker image
+      env:
+        VERSION: ${{ steps.version.outputs.version }}
+      run: |
+        echo "Building image"
+        docker build -t joshuadv13/graphql-pipelines:$VERSION .
+        docker build -t joshuadv13/graphql-pipelines:latest .
+        echo "Fin de la construccion"
 
-    # - name: Push the Docker image
-    #   run: |
-    #     echo "Pushing image to dockerhub"
-    #     docker push joshuadv13/graphql-pipelines:0.0.3
-    #     docker push joshuadv13/graphql-pipelines:latest
-    #     echo "Fin del push"
+    - name: Push the Docker image
+      run: |
+        echo "Pushing image to dockerhub"
+        docker push joshuadv13/graphql-pipelines:$VERSION
+        docker push joshuadv13/graphql-pipelines:latest
+        echo "Fin del push"
