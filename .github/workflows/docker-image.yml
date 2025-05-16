@@ -30,13 +30,15 @@ jobs:
     - name: Build the Docker image
       run: |
         echo "Building image"
-        docker build -t joshuadv13/graphql-pipelines:0.0.2 .
+        docker build -t joshuadv13/graphql-pipelines:0.0.3 .
+        docker build -t joshuadv13/graphql-pipelines:latest .
         echo "Fin de la construccion"
 
     - name: Push the Docker image
       run: |
         echo "Pushing image to dockerhub"
-        docker push joshuadv13/graphql-pipelines:0.0.2
+        docker push joshuadv13/graphql-pipelines:0.0.3
+        docker push joshuadv13/graphql-pipelines:latest
         echo "Fin del push"
 
     # - name: Build the Docker image
