@@ -46,6 +46,8 @@ jobs:
         echo "Fin de la construccion"
 
     - name: Push the Docker image
+      env:
+        VERSION: ${{ steps.version.outputs.version }}
       run: |
         echo "Pushing image to dockerhub"
         docker push joshuadv13/graphql-pipelines:$VERSION
