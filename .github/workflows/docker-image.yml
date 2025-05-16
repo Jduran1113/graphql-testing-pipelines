@@ -18,6 +18,15 @@ jobs:
       with:
         fetch-depth: 0
 
+    - name: Git semantic version
+      uses: PaulHatch/semantic-version@v4.0.3
+      with:
+        major_pattern: "major:"
+        minor_pattern: "minor:"
+        patch_pattern: "patch:"
+        format: "${major}.${minor}.${patch}-prerelase${increment}"
+      id: version
+
     - name: Docker login
       env:
         DOCKER_USER: ${{secrets.DOCKER_USER}}
@@ -26,17 +35,18 @@ jobs:
         echo "Haciendo login"
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
         echo "Fin del login"
+        echo "New version deployed: ${{steps.version.outputs.version}}"
 
-    - name: Build the Docker image
-      run: |
-        echo "Building image"
-        docker build -t joshuadv13/graphql-pipelines:0.0.3 .
-        docker build -t joshuadv13/graphql-pipelines:latest .
-        echo "Fin de la construccion"
+    # - name: Build the Docker image
+    #   run: |
+    #     echo "Building image"
+    #     docker build -t joshuadv13/graphql-pipelines:0.0.3 .
+    #     docker build -t joshuadv13/graphql-pipelines:latest .
+    #     echo "Fin de la construccion"
 
-    - name: Push the Docker image
-      run: |
-        echo "Pushing image to dockerhub"
-        docker push joshuadv13/graphql-pipelines:0.0.3
-        docker push joshuadv13/graphql-pipelines:latest
-        echo "Fin del push"
+    # - name: Push the Docker image
+    #   run: |
+    #     echo "Pushing image to dockerhub"
+    #     docker push joshuadv13/graphql-pipelines:0.0.3
+    #     docker push joshuadv13/graphql-pipelines:latest
+    #     echo "Fin del push"
