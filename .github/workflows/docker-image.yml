@@ -18,40 +18,32 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Git semantic version
-      uses: paulhatch/semantic-version@v4.0.3
+    - name: Git Semantic Version
+      uses: PaulHatch/semantic-version@v4.0.3
       with:
         major_pattern: "major:"
         minor_pattern: "feat:"
-        patch_pattern: "fix:"
         format: "${major}.${minor}.${patch}-prerelease${increment}"
       id: version
 
-    - name: Docker login
+    - name: Docker Login
       env:
-        DOCKER_USER: ${{secrets.DOCKER_USER}}
-        DOCKER_PASSWORD: ${{secrets.DOCKER_TOKEN}}
-        VERSION: ${{steps.version.outputs.version}}
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_TOKEN }}
+        
       run: |
-        echo "Haciendo login"
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-        echo "Fin del login"
-        echo "New version: $VERSION!!"
-
-    # - name: Build the Docker image
-    #   env:
-    #     VERSION: ${{ steps.version.outputs.version }}
-    #   run: |
-    #     echo "Building image $VERSION"
-    #     docker build -t joshuadv13/graphql-pipelines:$VERSION .
-    #     docker build -t joshuadv13/graphql-pipelines:latest .
-    #     echo "Fin de la construccion"
-
-    # - name: Push the Docker image
-    #   env:
-    #     VERSION: ${{ steps.version.outputs.version }}
-    #   run: |
-    #     echo "Pushing image to dockerhub $VERSION"
-    #     docker push joshuadv13/graphql-pipelines:$VERSION
-    #     docker push joshuadv13/graphql-pipelines:latest
-    #     echo "Fin del push"
+        
+    - name: Build Docker Image
+      env:
+        NEW_VERSION: ${{ steps.version.outputs.version }}
+      run: |
+        docker build -t klerith/docker-graphql:$NEW_VERSION .
+        docker build -t klerith/docker-graphql:latest .
+        
+    - name: Push Docker Image
+      env:
+        NEW_VERSION: ${{ steps.version.outputs.version }}
+      run: |
+        docker push klerith/docker-graphql:$NEW_VERSION
+        docker push klerith/docker-graphql:latest
