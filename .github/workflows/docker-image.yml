@@ -21,9 +21,10 @@ jobs:
     - name: Git Semantic Version
       uses: paulhatch/semantic-version@v5.4.0
       with:
-        major_pattern: "major:"
-        minor_pattern: "feat:"
-        version_format: "v${major}.${minor}.${patch}-prerelease${increment}"
+        major_pattern: "MAJOR"
+        minor_pattern: "MINOR"
+        patch_pattern: "PATCH"
+        version_format: "v${major}.${minor}.${patch}"
         search_commit_body: true
       id: version
 
